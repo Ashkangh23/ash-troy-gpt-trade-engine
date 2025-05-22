@@ -1,11 +1,15 @@
-# Real-Time Market Data App
+# 🧠 Ash&Troy Real-Time Market Data App
 
-This Streamlit app fetches real-time stock market data using the Polygon.io API and provides downloadable CSVs on request.
+This Streamlit app retrieves **real-time stock market data** using the **Polygon.io API** and allows users to download the data as a CSV file for analysis or upload to a Custom GPT.
 
-## Features
-- Real-time data pull (as fresh as 5 seconds)
-- Support for multiple ticker symbols
-- CSV export for analysis
+## 🚀 Features
 
-## Setup
-1. Create a `.streamlit/secrets.toml` file (or use Streamlit Cloud secrets panel) with:
+- 🔄 Fetch real-time U.S. equity data from Polygon.io (up to 5-second freshness)
+- 🧾 Supports multiple comma-separated ticker symbols (e.g., `AAPL,MSFT,NVDA`)
+- 📥 Download clean, timestamped CSV files on demand
+- ⚡ Built for rapid market monitoring and decision-making
+
+## 📦 Requirements
+
+Add this to `requirements.txt`:
+
