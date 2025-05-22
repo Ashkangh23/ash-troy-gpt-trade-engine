@@ -1,26 +1,11 @@
-# Ash&Troy GPT Trade Engine
+# Real-Time Market Data App
 
-A real-time institutional-grade trade scanning app powered by GPT-4 and Polygon.io.
+This Streamlit app fetches real-time stock market data using the Polygon.io API and provides downloadable CSVs on request.
 
 ## Features
-- Natural-language prompt interface
-- Real-time data from Polygon.io
-- GPT-based filtering logic
-- Signal Score calculations
+- Real-time data pull (as fresh as 5 seconds)
+- Support for multiple ticker symbols
+- CSV export for analysis
 
 ## Setup
-1. Add your API keys in `.streamlit/secrets.toml` on Streamlit Cloud:
-
-[polygon]
-api_key = "your_polygon_key"
-
-[openai]
-api_key = "your_openai_key"
-
-
-2. Deploy via [https://streamlit.io/cloud](https://streamlit.io/cloud)
-
-## Coming Soon
-- Dynamic Signal Score engine
-- Interactive session memory
-- Advanced pattern recognition
+1. Create a `.streamlit/secrets.toml` file (or use Streamlit Cloud secrets panel) with:
