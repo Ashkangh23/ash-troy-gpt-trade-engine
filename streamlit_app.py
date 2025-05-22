@@ -1,4 +1,3 @@
-
 import streamlit as st
 import openai
 import pandas as pd
@@ -28,8 +27,8 @@ st.set_page_config(page_title="Ash&Troy GPT Trade Engine", layout="wide")
 st.title("🚀 Ash&Troy GPT Trade Engine")
 st.caption("Live GPT-driven market scanner using real-time Polygon.io data")
 
-st.markdown("### 💬 Please enter a trading prompt below to begin...")
-st.info("Use the chat box to describe the kind of trades you're looking for (e.g., 'Show energy stocks with RSI < 50 and MACD bullish crossover')")
+st.markdown("### 💬 Enter a trading prompt to apply your Custom GPT's strategy...")
+st.info("Examples: 'Find energy stocks with RSI < 50 and MACD bullish crossover', 'Show long trade setups with volume surge'")
 
 # --- Chat Prompt ---
 user_prompt = st.chat_input("Enter your trade query here...")
@@ -38,22 +37,22 @@ if user_prompt:
     with st.chat_message("user"):
         st.markdown(user_prompt)
 
-    with st.spinner("Interpreting strategy via GPT..."):
+    with st.spinner("Using Custom GPT logic to interpret your strategy..."):
         messages = [
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user", "content": user_prompt},
         ]
-        gpt_response = openai.ChatCompletion.create(
+        gpt_response = openai.chat.completions.create(
             model="gpt-4",
             messages=messages,
             temperature=0.4
         )
-        parsed_query = gpt_response["choices"][0]["message"]["content"]
+        parsed_query = gpt_response.choices[0].message.content
         with st.chat_message("assistant"):
             st.markdown(parsed_query)
 
-    with st.spinner("Fetching real-time trade setups from Polygon.io..."):
-        # Placeholder: Replace this block with real filtering logic using your GPT parsed_query
+    with st.spinner("Fetching filtered trades using Custom GPT logic..."):
+        # Placeholder: Replace this with real-time filtering logic
         data = {
             "Ticker": ["AAPL", "MSFT", "NVDA", "GOOGL", "AMZN"],
             "Signal Score": [95, 92, 90, 88, 85],
@@ -70,4 +69,18 @@ if user_prompt:
         df = pd.DataFrame(data)
         st.dataframe(df, use_container_width=True)
 
+    with st.expander("📊 Refine further using GPT intelligence"):
+        followup = st.text_area("Ask GPT to re-analyze or break down this data:")
+        if followup:
+            refined = openai.chat.completions.create(
+                model="gpt-4",
+                messages=[
+                    {"role": "system", "content": SYSTEM_PROMPT},
+                    {"role": "user", "content": user_prompt},
+                    {"role": "assistant", "content": parsed_query},
+                    {"role": "user", "content": followup}
+                ],
+                temperature=0.5
+            )
+            st.markdown(refined.choices[0].message.content)
 
