@@ -1,3 +1,4 @@
+
 import streamlit as st
 import openai
 import pandas as pd
@@ -27,6 +28,9 @@ st.set_page_config(page_title="Ash&Troy GPT Trade Engine", layout="wide")
 st.title("🚀 Ash&Troy GPT Trade Engine")
 st.caption("Live GPT-driven market scanner using real-time Polygon.io data")
 
+st.markdown("### 💬 Please enter a trading prompt below to begin...")
+st.info("Use the chat box to describe the kind of trades you're looking for (e.g., 'Show energy stocks with RSI < 50 and MACD bullish crossover')")
+
 # --- Chat Prompt ---
 user_prompt = st.chat_input("Enter your trade query here...")
 
@@ -49,7 +53,7 @@ if user_prompt:
             st.markdown(parsed_query)
 
     with st.spinner("Fetching real-time trade setups from Polygon.io..."):
-        # TODO: Replace this block with real filtering logic using your GPT parsed_query
+        # Placeholder: Replace this block with real filtering logic using your GPT parsed_query
         data = {
             "Ticker": ["AAPL", "MSFT", "NVDA", "GOOGL", "AMZN"],
             "Signal Score": [95, 92, 90, 88, 85],
@@ -65,4 +69,5 @@ if user_prompt:
         }
         df = pd.DataFrame(data)
         st.dataframe(df, use_container_width=True)
+
 
