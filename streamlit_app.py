@@ -6,9 +6,9 @@ import requests
 # --- Load API Key ---
 polygon_api_key = st.secrets["polygon"]["api_key"]
 
-# --- Function to Fetch Real-Time Data ---
-def get_realtime_data(tickers):
-    url = f"https://api.polygon.io/v2/snapshot/locale/us/markets/stocks/tickers?tickers={','.join(tickers)}&apiKey={polygon_api_key}"
+# --- Function to Fetch Full Market Snapshot ---
+def get_full_market_data():
+    url = f"https://api.polygon.io/v2/snapshot/locale/us/markets/stocks/tickers?apiKey={polygon_api_key}"
     response = requests.get(url)
     if response.status_code == 200:
         data = response.json()["tickers"]
@@ -23,6 +23,7 @@ def get_realtime_data(tickers):
                 "Low": item["day"].get("l"),
                 "Open": item["day"].get("o"),
                 "Close": item["day"].get("c"),
+                "Previous Close": item["prevDay"].get("c"),
                 "Timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             })
         return pd.DataFrame(records)
@@ -30,31 +31,24 @@ def get_realtime_data(tickers):
         return pd.DataFrame()
 
 # --- Streamlit UI ---
-st.set_page_config(page_title="Real-Time Market Data App", layout="wide")
-st.title("📈 Real-Time Stock Market Data Downloader")
-st.caption("Capture and download market data from Polygon.io with updates as close as 5 seconds")
+st.set_page_config(page_title="📊 Full Market Snapshot", layout="wide")
+st.title("📊 Real-Time Full U.S. Market Data")
+st.caption("Powered by Polygon.io | Download all U.S. stock data in one click")
 
-# --- Ticker Input ---
-st.markdown("### 🔍 Enter stock ticker symbols (comma-separated)")
-ticker_input = st.text_area("Tickers", "AAPL,MSFT,NVDA")
+if st.button("📥 Capture Full Market Snapshot"):
+    st.info("Fetching entire U.S. stock market data from Polygon.io...")
+    df = get_full_market_data()
+    if not df.empty:
+        st.success(f"✅ Retrieved {len(df)} tickers with real-time data!")
+        st.dataframe(df, use_container_width=True)
 
-if st.button("🔄 Fetch Real-Time Data"):
-    tickers = [t.strip().upper() for t in ticker_input.split(",") if t.strip()]
-    if tickers:
-        st.info("Fetching data from Polygon.io...")
-        df = get_realtime_data(tickers)
-        if not df.empty:
-            st.success("✅ Real-time data retrieved!")
-            st.dataframe(df, use_container_width=True)
-
-            # --- CSV Download ---
-            csv = df.to_csv(index=False).encode('utf-8')
-            st.download_button(
-                label="📥 Download CSV",
-                data=csv,
-                file_name="realtime_market_data.csv",
-                mime="text/csv"
-            )
-        else:
-            st.error("❌ Failed to retrieve data. Check your API key or ticker symbols.")
-
+        # --- CSV Download ---
+        csv = df.to_csv(index=False).encode('utf-8')
+        st.download_button(
+            label="⬇ Download Full Market CSV",
+            data=csv,
+            file_name="full_market_snapshot.csv",
+            mime="text/csv"
+        )
+    else:
+        st.error("❌ Failed to retrieve market data. Please check your API key or try again later.")
