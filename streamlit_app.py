@@ -6,8 +6,8 @@ import datetime
 import requests
 
 # --- Load API Keys ---
-polygon_api_key = st.secrets["polygon"]["Q2pRkWMO06zVoRinlOadfRw8EizdYt4K"]
-openai_api_key = st.secrets["openai"]["sk-AExnH3uhDJw8x6CRtniuhJT0kHPis6ufe-ZJYDQUjWT3BlbkFJZ3ITvTgvRUYaRwKRRO650iei6N3Zf5EpTPqja864EA"]
+polygon_api_key = st.secrets["polygon"]["api_key"]
+openai_api_key = st.secrets["openai"]["api_key"]
 openai.api_key = openai_api_key
 
 # --- GPT System Prompt ---
